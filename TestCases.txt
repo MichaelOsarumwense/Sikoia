@@ -1,0 +1,98 @@
+﻿___________
+Clients
+___________
+
+Test Cases
+___________________
+
+I)Create new client with valid field entries
+II)Create new client where client type is neither "active" or "prospect"
+III)Create new client where date of birth is 16 years or younger
+IV)Create new client where jurisdiction neither equals "uk", "de", "nl"
+V) Create new client with name field missing
+VI)Create new client with date_of_birth field missing
+VII)Create new client with jurisdiction field missing
+VIII)Create new client with client_type field missing
+
+IX)Get Client BY ID
+X)Get Client BY wrong ID
+
+X) Upgrade Existing Client BY valid  ID
+XI) Upgrade client with Invalid ID
+
+
+Assertions: [Applies to all entities]
+_____________________________________
+I)Resposne Body
+II)Response Header (content-type)
+III)Response Time (Performance monitoring)
+1V)Status code
+
+Issues/Bug/Observations
+________________________
+I)Creating a client allows for name field to be missing/null.
+II)Throws a 500 server error when date_of_birth field is missing but should be 400 bad request.
+III)Creating a client allows for jurisdiction to be an empty array.
+IV)Throws a 500 server error when jurisdiction field is missing but should be 400 bad request.
+
+
+______________
+Products
+_______________
+
+Test Cases
+_______________
+
+I)Create a new product with valid field entries
+II)Create new product where jurisdiction neither equals "uk", "de", "nl"
+III)Create new product where price is negative
+IV)Create new product where price is zero
+V)Create a new prouct where decription is greater than 100
+V)Create new product with name field missing
+VII)Create new product with jurisdiction field missing
+VIII)Create new product with price field missing
+IX)Create new description with client_type field missing
+
+X) Get Product By Valid ID
+XI) Get Product by Invalid ID
+
+Issues/Bug/Observations
+____________________________
+I)Creates a product where price is negative
+II)Creates a product where price is 0.0
+III))Creating a client allows for name field to be missing/null.
+IV)Creating a product allows for price field to be missing/null
+V)Throws a 500 server error when jurisdiction field is missing but should be 400 bad request.
+VI)Throws a 500 server error when description field is missing but should be 400 bad request.
+VII)Creating a client allows for jurisdiction to be an empty array.
+
+
+______________________
+Sales
+______________________
+
+Test Cases
+_______________________
+
+I)Create a new sale with valid field entries.
+II)Create a new sale with an upgraded prospect client
+III)Create a new sale where decription is greater than 100
+IV)Create new sale where quantity is greater than 10
+V)Create a new sale where quantity is negative
+VI)Create a new sale with invalid client_id
+VII)Create a new sale with invalid product_id
+VIII)Create sale with client sale with client_type equals prospect
+IX)Create a new sale with missing field values
+
+IX) Get Sale by ID
+X) Get sales by invalid ID
+
+Issues/Bug/Observations
+___________________________
+
+I)Upgraded clients are unable to create a sale booking as the client_type is still being interepreted as prospects though upgraded to active.
+II)Allows the creation of sales with quantity as zero
+III)Allows the creation of sales with quantity as a negative integer
+IV)Allows the creation of sale without a description
+V)Throws a 500 server error when description field is missing but should be a 400
+VI)Throws a 500 server error when quantity field is missing but should be a 400

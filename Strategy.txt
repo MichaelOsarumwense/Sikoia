@@ -1,0 +1,80 @@
+﻿___________
+Approach -
+___________
+
+For this application, the approcah will be to have full test coverage that spans the entire 
+software development life cycle from development to production.
+
+__________________________________________________
+Test Levels - Roles - Responsibility - Environment
+__________________________________________________
+
+To allow for total functional coverage, the application will be tested at three levels
+
+1. Unit Level (White Box) - Test at this level is to be carried out by developers, they call every 
+function and unit module of the application under test, passing in a stub of the expected 
+arguements and asserting that these unit modules that make up the application are able to 
+respond as expected. As part of the unit level, there also are intergrated units coupled 
+in a single module or method. This will involve testing unit modules or functions that combines 
+two units withing itself to fulfil a logic and produce a response. Where third party API's are 
+called within an intergrated unit module, then that call must be intercepted and replaced with 
+a mock to ensure we only test the logic we are responsible for. This type of test should account for 
+at least 50% of the entire testing of the application (I encourage collaborations with QA's at this level to
+brain storm on possible scenarios that can be covered). Run this type of test before commiting new code change
+by using pre-commit hooks.
+
+2. System Unit Level (Grey ? Black Box) - This is predominantly the resposiblity of the QA's and the test function. 
+At this level we test single endpoints of the application in Isolation. For example Get Client By ID: When testing 
+this endpoint, I would not call create client and then use the result from that to make a get request. I will rather
+seed the data base with a new client entry, save the id in a variable and use the ID to to make the Get Request. 
+In this way, if there was a problem with the Create Client Endpoint, the Get Client by ID test will not fail for that 
+purpose. This makes it easier to identify where the issue is coming from. This is a type of intergration test because 
+it tests the integration between the system single resource unit with it's dependecies such as the database but while 
+not considering any flow dependency. Run this test when changes are pushed to a branch but before being merged
+to development branch. This should account for 30 - 40% of the test coverage
+
+3. System Intergration / flow (Grey ? Black Box). This is a level of testing that seeks to validate the syetm flow as 
+a whole or as an actual user / sales admin might. To illustrate this, lets consider a scenario that requires a sale
+to be booked. For this to happen we would have to create a client (post request), create product and then book a sale. 
+A test that validates this entire flow would be a system intergration or flow test as this ensures that there is no discrepancy
+in our workflow. Why is this important? Well it is indeed possible to have the other tests pass and still release a bug. 
+Lets take for example a bug that would otherwise be impossible to catch without a flow. Scenario : Create client as prospect,
+upgrade client to active, create product and then book a new sale to the newly upgraded client.Now if for any reason 
+the upgraded client isn't able to book a sale because the system still identifies it as a prospective client instead 
+of an active client then this sort of bug will almost be impossible to catch without running through the whole flow. 
+
+When do we run this sort of test? Well we run this test before code is shipped between environments, ideally in the 
+pipeline. One or two test will be suffiecient for this. We test the complete flow with active client, and test alternative 
+complete flow with upgraded client. Three Amigo collaboration is encouraged at this point to ensure the system is 
+actually tested like a user would and in the most possible combination of scenario or user flow.
+This should account for 10 - 20% of the test coverage
+
+________________________
+Testing Tools & Method-
+________________________
+
+Manual Testing: Postman
+
+Automated Testing: Nunit, Ms Unit Testt && Restsharp for API 
+
+__________________
+Test schedule
+__________________
+Unit Test - are scheduled to run before commit using pre-commit hooks to ensure a commit triggers test run
+System Unit Test - scheduled to run once changes are pushed from local branch to developent.
+System Integration Test - Run this in the pipeline before code are merged between environmentts such as 
+DEV - UAT - PROD.
+
+_________________________
+Regression test approach
+_________________________
+With fully automated systems, regression becomes automatic as well. In the eventuality of a bug, a test is added 
+to the test suite to account for any loop hole and then the entire test suite is ran again to ensure all
+use cases are covered and regressed. Exploratory test should be carried as part of regression from time to time.
+
+___________________________
+Test summary and Reporting
+___________________________
+Azure Devops provides a test plan that keeps a record of test run and a graph of the ratio of test pass to failure. 
+This can be be collated to produce a monthly, qualrtely and yearly test summary of test executed, bugs raised raised
+due to failed test as well as the overall health of the application. These can manually be done in wiki as well.
