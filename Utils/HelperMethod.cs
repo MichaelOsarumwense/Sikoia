@@ -1,6 +1,7 @@
 ﻿using Newtonsoft.Json;
 using RestSharp;
 using System.IO;
+using System.Net;
 
 namespace Sikoia.Utils
 {
@@ -43,10 +44,11 @@ namespace Sikoia.Utils
 
         }
 
-        public RestRequest CreateDeleteRequest()
+        public RestRequest CreateDeleteRequest(string endpoint)
         {
             var restRequest = new RestRequest();
             restRequest.AddHeader("Accept", "application/json");
+            var response = SetUrl(endpoint).Delete(restRequest);
             return restRequest;
         }
 
